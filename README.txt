@@ -1,5 +1,5 @@
 Overview:
-
+THIS IS MY COLLEGE PROJECT
 Reso-Blend is a powerful tool designed for full-scale LUFS (Loudness Units Relative to Full Scale) analysis and audio stem isolation. With its intuitive user interface, Reso-Blend allows users to analyze audio files in various formats and extract individual stems with precision. The project is built using React for the frontend and PHP for the backend, ensuring seamless integration and robust functionality.
 
 Features:
