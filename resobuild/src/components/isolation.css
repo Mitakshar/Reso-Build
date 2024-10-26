@@ -1,0 +1,71 @@
+.Isolation {
+  background: linear-gradient(to bottom right, #c6b9f5, #9f2c2c);
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  height: 90vh;
+  padding: 10px;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(19, 5, 61, 0.8); /* Optional: Add a shadow for depth */
+  width: 100vh;/* Ensure the container takes up the full height of the viewport */
+}
+
+.Isolation h1,
+.Isolation h2 {
+  text-align: center; /* Center align the headings */
+}
+
+.Isolation form {
+  text-align: center; /* Center align the form elements */
+  margin-top: 20px; /* Add margin at the top */
+}
+
+.Audiocontainer {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin-top: 0px; /* Add margin at the top */
+  width: 50%;
+  margin-left: 180px;
+  
+}
+
+.Audiocontainer p {
+  text-align: center; /* Center align the paragraphs */
+  margin-bottom: 1px; /* Add some space below each paragraph */
+}
+
+.Audiocontainer audio {
+  width: 100%; /* Ensure the audio player fills its container */
+  margin-bottom: 2px; /* Add more space below each audio player */
+}
+
+
+
+
+.Isolation button{
+  padding: 10px 20px;
+    font-size: 16px;
+    background-color: #007bff; /* Change the button color as needed */
+    color: #ffffff; /* Change the text color as needed */
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.Isolation button:hover {
+    background-color: #0056b3; /* Change the button color on hover */
+  }
+
+  .player{
+    height: 30px;
+  }
+
+
+  @media (max-width: 700px) {
+    .Isolation {
+      flex-direction: column;
+      width: 90%;
+    }
+  }

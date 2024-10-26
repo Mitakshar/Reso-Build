@@ -1,0 +1,515 @@
+.audio-player {
+    width: 100%;
+    max-width: 400px;
+    margin: 0 auto;
+    background-color: transparent;
+  }
+  
+  .player {
+    width: 100%;
+    border: none;
+    outline: none;
+    background-color:transparent;
+    border-radius: 10px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  }
+  
+  .player::-webkit-media-controls {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    background-color: transparent;
+  }
+  
+  .player::-webkit-media-controls-panel {
+    background-color: #fafafa;
+  }
+  
+  .player::-webkit-media-controls-play-button,
+  .player::-webkit-media-controls-mute-button {
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    outline: none;
+  }
+  
+  .player::-webkit-media-controls-play-button::before {
+    content: '\u25B6';
+    font-size: 1.2em;
+  }
+  
+  .player::-webkit-media-controls-mute-button::before {
+    content: '\uD83D\uDD07';
+    font-size: 1.2em;
+  }
+  
+  .player::-webkit-media-controls-timeline {
+    background-color: #ffffff;
+    height: 4px;
+    border-radius: 2px;
+  }
+  
+  .player::-webkit-media-controls-current-time-display,
+  .player::-webkit-media-controls-time-remaining-display {
+    color: #ea1f1f;
+    font-size: 0.8em;
+  }
+  
+  .player::-webkit-media-controls-current-time-display {
+    margin-right: 1px;
+  }
+  
+  .player::-webkit-media-controls-volume-slider {
+    display: none;
+  }
+  
+  .player::-webkit-media-controls-volume-slider-container,
+  .player::-webkit-media-controls-mute-button {
+    display: none;
+  }
+  
+  .player::-webkit-media-controls-seek-back-button,
+  .player::-webkit-media-controls-seek-forward-button {
+    display: none;
+  }
+  .Upload {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 50vh; /* This ensures the form takes up the full height of the viewport */
+    position: relative;
+  }
+  
+  .Upload form {
+    text-align: center; /* Center align the form elements */
+  }
+  
+  .Upload label {
+    margin-bottom: 10px; /* Add some space below the label */
+  }
+  
+  .Upload input[type="file"] {
+    margin-bottom: 20px; /* Add more space below the file input */
+  }
+  
+  .Upload button {
+    padding: 10px 20px;
+    font-size: 16px;
+    background-color: #007bff; /* Change the button color as needed */
+    color: #cfc5c5; /* Change the text color as needed */
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  .Upload button:hover {
+    background-color: #0056b3; /* Change the button color on hover */
+  }
+
+  .Resultblock{
+    display: flex;
+    justify-content: baseline;
+  }
+
+
+  .Upload h1{
+    color: #521818;
+    text-align: top;
+  }
+
+  import axios from "axios";
+import { useState } from "react";
+import './analysis.css';
+const Analysis = () => {
+    const [file, setFile] = useState(null);
+    const [originalLoudness, setOriginalLoudness] = useState(null);
+    const [integratedLoudness, setIntegratedLoudness] = useState(null);
+    const [audioUrl, setAudioUrl] = useState(null);
+    const [truepeak,settruepeak] = useState(null);
+    const [gainreduction,setgainreduction] = useState(null);
+    const[samplerate,setsamplerate] = useState(null);
+    const [bitdepth,setbitdepth] = useState(null);
+    const [finurl,setfinurl] = useState(null);
+	const handleFileChange = (event) => {
+		setFile(event.target.files[0]);
+	}
+    const baseul = "http://localhost:8000/";
+
+    //define a function for handeling submit button which sends the uploaded audio to server and recieves the  json response from the server
+    const handleSubmit = async (event) => {
+        event.preventDefault();
+        const formData = new FormData();
+        formData.append("audio_file", file);
+        
+        setAudioUrl(null);
+        setOriginalLoudness(null)
+        try {
+            const response = await axios.post("http://localhost:8000/server.php", formData);
+    
+            // Axios automatically parses the JSON response, so no need to call response.json()
+            const data = response.data;
+    
+            if (data) {
+                console.log(data);
+                const finalLoudness = data.output.final_loudness;
+                const normalizedFile = data.output.normalized_file;
+                const originalLoudness = data.output.original_loudness;
+                const truepeak = data.output.true_peak;
+                const gainreduction = data.output.gain_reduction;
+                const samplerate = data.output.sample_rate;
+                const bitdepth = data.output.bit_depth;
+                
+                setAudioUrl(normalizedFile);
+                setIntegratedLoudness(finalLoudness);
+                setOriginalLoudness(originalLoudness);
+                settruepeak(truepeak);
+                setgainreduction(gainreduction);
+                setsamplerate(samplerate);
+                setbitdepth(bitdepth);
+                console.log(finalLoudness);
+                
+                setfinurl(baseul+normalizedFile);
+                console.log(finurl);
+            } else {
+                console.error("No data received");
+            }
+        } catch (error) {
+            console.error("Error:", error);
+        }
+    };
+	return (
+		<>
+            
+            <div className="Upload"> 
+            <h1>LUFS Analysis</h1>
+            <h2>Upload your song (wav/mp3)</h2>
+            <form onSubmit={handleSubmit} encType="multipart/form-data">
+                <label htmlFor="audio_file">Select an audio file:</label>
+                <input type="file" id="audio_file" accept=".mp3, .wav" onChange={handleFileChange} required />
+                <button type="submit">Upload</button>
+            </form>
+             {originalLoudness && (
+                <div className="Result">
+                    <div className="Resultblock">
+                    <p>Original Loudness : {originalLoudness + " LUFS"}</p>
+                    </div>
+                    <div className="Resultblock">
+                    <p>Integrated Loudness: {integratedLoudness + " LUFS"}</p>
+                    </div>
+                    <div className="Resultblock">
+                    <p>True peak: {truepeak + " dBTP"}</p>
+                    </div>
+                    <div className="Resultblock">
+                    <p>Gain Reduction: {gainreduction + " dB"}</p>
+                    </div>
+                    <div className="Resultblock">
+                    <p>Sample rate: {samplerate/1000 + 'kHz'}</p>
+                    </div>
+                    <div className="Resultblock">
+                    <p>Bit Depth: {bitdepth + "bit"}</p>
+                    </div>
+                    
+                    {audioUrl && (
+                        <div className="audio-player">
+                        <audio className="player" controls>
+                            <source src={finurl} type="audio/wav" />
+                            Your browser does not support the audio element.
+                        </audio>
+                        </div>
+                    )}
+                    
+                </div>
+            )} 
+            </div>
+            
+        </>
+    );
+}
+export default Analysis;
+
+
+
+import React, { useState, useEffect, useRef } from 'react';
+import PropTypes from 'prop-types';
+import WaveSurfer from 'wavesurfer.js';
+import styled from 'styled-components';
+import { FaPlayCircle, FaPauseCircle } from 'react-icons/fa';
+
+const Waveform = ({ audio }) => {
+  const containerRef = useRef(null);
+  const waveSurferRef = useRef(null);
+  const [isPlaying, setIsPlaying] = useState(false);
+
+  useEffect(() => {
+    if (!audio || waveSurferRef.current) return;
+
+    // Create WaveSurfer instance
+    const waveSurfer = WaveSurfer.create({
+      container: containerRef.current,
+      responsive: true,
+      barWidth: 2,
+      barHeight: 10,
+      cursorWidth: 0,
+    });
+    waveSurfer.load(audio);
+    waveSurfer.on('ready', () => {
+      waveSurferRef.current = waveSurfer;
+    });
+
+    // Cleanup function
+    return () => {
+      if (waveSurferRef.current) {
+        waveSurferRef.current.destroy();
+        waveSurferRef.current = null;
+      }
+    };
+  }, [audio]);
+
+  const togglePlay = () => {
+    if (!waveSurferRef.current) return;
+
+    if (waveSurferRef.current.isPlaying()) {
+      waveSurferRef.current.pause();
+      setIsPlaying(false);
+    } else {
+      waveSurferRef.current.play();
+      setIsPlaying(true);
+    }
+  };
+
+  return (
+    <WaveSurferWrap>
+      <button onClick={togglePlay} type="button">
+        {isPlaying ? <FaPauseCircle size="3em" /> : <FaPlayCircle size="3em" />}
+      </button>
+      <div ref={containerRef} />
+    </WaveSurferWrap>
+  );
+};
+
+Waveform.propTypes = {
+  audio: PropTypes.string.isRequired,
+};
+
+const WaveSurferWrap = styled.div`
+  display: grid;
+  grid-template-columns: 40px 1fr;
+  align-items: center;
+
+  button {
+    width: 40px;
+    height: 40px;
+    border: none;
+    padding: 0;
+    background-color: white;
+  }
+`;
+
+export default Waveform;
+
+
+import React, { useEffect, useRef, useState } from "react";
+import WaveSurfer from "wavesurfer.js";
+import {
+  BsFillStopFill,
+  BsFillPlayFill,
+  BsSkipForward,
+  BsSkipBackward,
+} from "react-icons/bs";
+
+export default function Home({audio}) {
+  const waveformRef = useRef(null);
+  let wavesurfer;
+  const [playPause, setPlayPause] = useState(false);
+
+  useEffect(() => {
+    wavesurfer = WaveSurfer.create({
+      container: waveformRef.current,
+      waveColor: "#34374B",
+      progressColor: "#F90",
+      url: audio,
+      dragToSeek: true,
+      width: "35vw",
+      hideScrollbar: true,
+      normalize: true,
+      barGap: 1,
+      height: 60,
+      barHeight: 20,
+      barRadius: 20,
+      barWidth: 5,
+    });
+
+    // wavesurfer.load(audio);
+
+    wavesurfer.on("finish", () => {
+      console.log("song finished");
+    });
+
+    wavesurfer.on("ready", () => {
+      console.log("Waveform is ready");
+    });
+
+    return () => {
+      wavesurfer.destroy();
+    };
+  }, []);
+
+  const handleStop = () => {
+    if (wavesurfer) {
+      wavesurfer.stop();
+      setPlayPause(false);
+    }
+  };
+
+  const handlePause = () => {
+    if (wavesurfer) {
+      wavesurfer.playPause();
+      setPlayPause(!playPause);
+    }
+  };
+
+  const handleSkipForward = () => {
+    if (wavesurfer) {
+      wavesurfer.skip(2);
+    }
+  };
+
+  const handleSkipBack = () => {
+    if (wavesurfer) {
+      wavesurfer.skip(-2);
+    }
+  };
+
+  return (
+    <div className="container">
+      <div className="sub-container">
+        {/* Image */}
+        <p>Oceans</p>
+
+        {/* Waveform */}
+        <div ref={waveformRef} className="wavesurfer-container" />
+
+        {/* Controls */}
+        <div className="wavesurfer-controls">
+          <button onClick={handleSkipBack}>
+            <BsSkipBackward />
+          </button>
+          <button onClick={handlePause}>
+            {playPause ? <BsFillStopFill /> : <BsFillPlayFill />}
+          </button>
+          <button onClick={handleStop}>
+            <BsFillStopFill />
+          </button>
+          <button onClick={handleSkipForward}>
+            <BsSkipForward />
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+
+import React, { useState } from 'react';
+import axios from 'axios';
+import './isolation.css';
+import Waveform from "./Waveform";
+const base = "http://localhost:8000/";
+const Isolation = () => {
+    const [file, setFile] = useState(null);
+    const [audioUrl,setaudioUrl] = useState(null);
+    const [outputdir,setoutputdir] = useState(null);
+    const [uploadedaudio,setuploadedaudio] = useState(null);
+    const handleFileChange = (event) => {
+        setFile(event.target.files[0]);
+    };
+    const handleUpload = async(event) => {
+        event.preventDefault();
+        const formData = new FormData();
+        formData.append("audio_file", file);
+        setaudioUrl(null);
+        setoutputdir(null);
+        try {
+            const response = await axios.post("http://localhost:8000/isolate.php", formData);
+
+            const data = response.data;
+
+            if(data){
+                setaudioUrl(data.URL);
+                setoutputdir(data.Content);
+                setuploadedaudio(data.original_audio)
+                console.log(audioUrl);
+                console.log(uploadedaudio);
+            }
+            else{
+                console.log("NO data recieved");
+            }
+        }
+        catch(err){
+            console.error(err);
+
+        }
+    
+    };
+   const voc = "/bass.wav";
+   const finur = base + audioUrl + outputdir + voc;
+   console.log(finur);
+    return (
+        <>
+        <h1>Audio Stem Isolation</h1>
+        <div className='Isolation'>
+            
+            <h2>Upload Your Song (wav/mp3)</h2>
+        <form onSubmit={handleUpload} encType="multipart/form-data">
+                <label htmlFor="audio_file">Select an audio file:</label>
+                <input type="file" id="audio_file" accept=".mp3, .wav, .ogg" onChange={handleFileChange} required />
+                <button type="submit">Upload</button>
+            </form>
+             
+            {audioUrl && (
+                
+                <div className='Audiocontainer'>
+                    <p>Original Audio</p>
+                    <audio  className='player'controls>
+                    <source src={`http://localhost:8000/${uploadedaudio}`} type="audio/wav" />
+                    Your browser does not support the audio element.
+                   </audio>
+                   <p>BASS</p>
+                   <audio  className='player'controls>
+                    <source src={`http://localhost:8000/${audioUrl}${outputdir}/bass.wav`} type="audio/wav" />
+                    Your browser does not support the audio element.
+                   </audio>
+                    
+                   <p>DRUMS</p> 
+                   <audio className='player' controls>
+                   <source src={`http://localhost:8000/${audioUrl}${outputdir}/drums.wav`} type="audio/wav" />
+                   Your browser does not support the audio element.
+                   </audio>
+
+                   <p>OTHERS</p>
+                   <audio className='player'controls>
+                   <source src={`http://localhost:8000/${audioUrl}${outputdir}/other.wav`} type="audio/wav" />
+                   Your browser does not support the audio element.
+                   </audio>
+
+                   <p>VOCALS</p>
+                   <audio className='player'controls>
+                   <source src={`http://localhost:8000/${audioUrl}${outputdir}/vocals.wav`} type="audio/wav" />
+                   Your browser does not support the audio element.
+                   </audio>
+                </div>
+    
+    
+
+     
+    
+)}
+         </div>
+
+    </>
+  );
+};
+
+export default Isolation;

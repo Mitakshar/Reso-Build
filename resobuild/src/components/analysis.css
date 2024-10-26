@@ -1,0 +1,180 @@
+.containerbox{
+  background: linear-gradient(to bottom right, #c6b9f5, #9f2c2c);
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  background-color: rgb(245, 245, 245); /* or any other color for the content background */
+  height: 90vh;
+  padding: 10px;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(19, 5, 61, 0.8); /* Optional: Add a shadow for depth */
+  width: 100vh;
+}
+
+@media (max-width: 700px) {
+  .containerbox {
+    flex-direction: column;
+    width: 90%;
+  }
+  
+}
+.Upload{
+ background: transparent;
+ 
+ display: flex;
+ flex-direction: column;
+ 
+ flex-wrap: wrap;
+ overflow: hidden;
+ justify-content:center;
+
+}
+
+.containerbox h1{
+  text-align: center;
+  color: rgb(107, 31, 31);
+}
+
+
+.Upload h2 {
+  font-size: 24px;
+  margin-bottom: 25px;
+  margin-left: 200px;
+  color: #333;
+}
+
+.Upload label {
+  display: block;
+  margin-bottom: 10px;
+  margin-left: 200px;
+  font-weight: bold;
+  color: #555;
+}
+
+.Upload input[type="file"] {
+  display: block;
+  width: 50%;
+  padding: 10px;
+  margin-bottom: 20px;
+  margin-left: 200px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.Upload button[type="submit"] {
+  display: block;
+  width: 20%;
+  padding: 10px;
+  background-color: #2980dc;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  margin-left: 300px;
+}
+
+.Upload button[type="submit"]:hover {
+  background-color: #00397a;
+}
+.Result {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.Resultblock {
+  flex: 0 0 calc(22.22% - 6px); /* Adjust the width as needed */
+  padding: 15px;
+  background : linear-gradient(to bottom right, #c6b9f5, #e5bdbd); /* Adjust the gradient colors as needed */
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  margin-bottom: 20px;
+  transition: transform 0.3s ease;
+  text-align: center;
+}
+
+.Resultblock:hover {
+  transform: translateY(-5px);
+  background-color: #dfecf6;
+}
+
+.Resultblock p {
+  font-size: 15px;
+  font-family:Cambria, Cochin, Georgia, Times, 'Times New Roman', serif ;
+  margin: 0;
+  color: #333;
+}
+
+/* Responsive Styles */
+@media screen and (max-width: 600px) {
+  .Resultblock {
+    flex: 0 0 calc(50% - 20px);
+  }
+  @media screen and (max-width: 400px) {
+    .Resultblock {
+      flex: 0 0 calc(100% - 20px);
+    }
+  }
+}
+
+
+
+
+.Resultblock a{
+  font-size: 15px;
+  font-weight:bold;
+}
+
+.audio-player {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+  background-color:transparent;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+}
+
+.player {
+  width: 100%;
+  outline:none; /* Remove default focus outline */
+  background: transparent;
+}
+
+/* Customize audio controls */
+.player::-webkit-media-controls-panel {
+  background-color: transparent; /* Remove default background */
+}
+
+.player::-webkit-media-controls-play-button {
+  color: #ecac8d; /* Customize play button color */
+}
+
+.player::-webkit-media-controls-current-time-display,
+.player::-webkit-media-controls-time-remaining-display {
+  color: #573737; /* Customize time display color */
+}
+
+.player::-webkit-media-controls-seek-back-button,
+.player::-webkit-media-controls-seek-forward-button {
+  color: #4381c4; /* Customize seek buttons color */
+}
+
+/* Hide volume and mute controls */
+.player::-webkit-media-controls-volume-slider,
+.player::-webkit-media-controls-mute-button {
+  color: #b0bbc7;
+}
+
+.loader{
+  display: flex;
+  justify-content: center;
+}
+
+.audio-player p{
+  font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+  
+}

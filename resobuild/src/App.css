@@ -1,0 +1,157 @@
+body, html {
+  height: 100%;
+  margin: 0;
+  overflow: hidden; /* Prevent scrollbars */
+  
+}
+
+.App {
+  display: flex;
+  flex-direction: column;
+  height: 100%; /* Fill the entire height of the viewport */
+  
+}
+
+
+.isolate{
+  display: block;
+  justify-content: center;
+  max-width: device-width;
+  font-family:cursive,sans-serif;
+  font-size: x-large;
+  background-color: antiquewhite;
+  margin-top:0rem;
+}
+
+.option-selector{
+  display: flex;
+  justify-content: center;
+}
+.container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  height: 100vh;
+  background: #BE93C5;  /* fallback for old browsers */
+background: -webkit-linear-gradient(to right, #7BC6CC, #BE93C5);  /* Chrome 10-25, Safari 5.1-6 */
+background: linear-gradient(to right, #7BC6CC, #BE93C5); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+/* Adjust gradient colors as needed */
+
+}
+
+
+.option-selector {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: auto; /* Change height to auto */
+  max-height: 70vh;
+  margin-bottom: 4rem; /* Set max-height to limit the container's height */
+}
+
+.option-selector h2 {
+  text-align: center;
+}
+
+.Selectbuton {
+  margin-top: 20px;
+  padding: 10px 20px;
+  font-size: 16px;
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.Selectbuton:hover {
+  background-color: #0056b3;
+}
+
+.selected-component{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 50vh;
+}
+.container h3{
+  font-size:20px;
+  text-align: center;
+}
+.container p{
+  text-align: center;
+}
+.content {
+  background: transparent;
+  border-radius: 10px;
+  padding: 30px;
+  width: 100vh;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  color: #fff;
+  margin-bottom: 5rem;
+  margin-top: 2rem;
+  height: 90vh;
+}
+
+h1 {
+  font-size: 32px;
+  color: #fff;
+  margin-bottom: 20px;
+}
+
+p {
+  font-size: 16px;
+  line-height: 1.6;
+  margin-bottom: 1px;
+  padding: 1px;
+  margin-top: 2rem;
+}
+
+p:last-child {
+  margin-bottom: 0;
+}
+@media (max-width: 700px) {
+
+  
+  .content {
+    padding: 20px;
+  }
+  
+  h1 {
+    font-size: 28px;
+  }
+  
+  p {
+    font-size: 14px;
+  }
+}
+
+.butons{
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  margin-bottom: 10rem;
+}
+
+@media(min-width:900px){
+  .content{
+    width:90%;
+   
+  }
+}
+.Cont{
+  background: linear-gradient(to bottom right, #c6b9f5, #9f2c2c);
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  background-color: rgb(245, 245, 245); /* or any other color for the content background */
+  height: 70vh;
+  padding: 10px;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(19, 5, 61, 0.8); /* Optional: Add a shadow for depth */
+  width: 100vh;
+  overflow: hidden;
+}

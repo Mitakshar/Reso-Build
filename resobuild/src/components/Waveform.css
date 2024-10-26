@@ -1,0 +1,14 @@
+.cont{
+    display: flex;
+   justify-content: center;
+}
+.cont button{
+  width: 20%;
+  padding: 10px;
+  background-color:transparent;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
